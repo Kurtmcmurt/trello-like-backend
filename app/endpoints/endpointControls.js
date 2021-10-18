@@ -5,7 +5,7 @@ import {
 } from '../../utils/database.js'
 
 export const controls = (source) => {
-  source.get('/notes', (req, res) => {
+  source.get('/notes', (req, res, next) => {
     getNotes()
       .then(data => {
         res.send(data)
