@@ -1,21 +1,20 @@
 import {
   addNotes,
-  getNotes
+  getNotes,
+  getNote
 } from '../../utils/database.js'
 
 export const controls = (source) => {
-  source.get('/', (err, res) => {
-    try {
-      res.status(200)
-      res.json({ working: true })
-      res.end()
-    } catch (error) {
-      console.log(err)
-    }
+  source.get('/notes', (req, res) => {
+    getNotes()
+      .then(data => {
+        res.send(data)
+      })
+      .catch(next)
   })
 
-  source.get('/notes', (req, res, next) => {
-    getNotes()
+  source.get('/notes/:id', (req, res, next) => {
+    getNote(req.params.id)
       .then(data => {
         res.send(data)
       })

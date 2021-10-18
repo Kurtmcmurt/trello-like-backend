@@ -2,6 +2,7 @@ import { join } from 'path'
 import { Low, JSONFile } from 'lowdb'
 import { baseUrl } from '../config.js'
 import { v4 as uuidv4 } from 'uuid'
+import lodash from 'lodash'
 
 const file = join(baseUrl, 'db.json')
 const adapter = new JSONFile(file)
@@ -29,11 +30,23 @@ export const addNotes = async ( data ) => {
   }
 }
 
-export const getNotes = async (req) => {
+export const getNotes = async () => {
   // const { notes } = db.data
   await db.read()
   const { notes } = db.data
   return notes
+}
+
+export const getNote = async (id) => {
+  // const { notes } = db.data
+  await db.read()
+  db.chain = lodash.chain(db.data)
+  const note = db.chain
+  .get('notes')
+  .find({ id })
+  .value()
+
+  return note
 }
 
 // const projects;
