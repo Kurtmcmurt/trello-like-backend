@@ -1,4 +1,7 @@
-import { AddNotes } from "../../utils/database.js"
+import {
+  addNotes,
+  getNotes
+} from '../../utils/database.js'
 
 export const controls = (source) => {
   source.get('/', (err, res) => {
@@ -11,15 +14,23 @@ export const controls = (source) => {
     }
   })
 
-  source.post('/note/add', (req, res, next) => {
-    // console.log(req)
-    res.send(req.body)
-    AddNotes(req.body)
-    // try {
-    //   AddNotes(req.body.content)
-    // } catch (error) {
-    //   console.log([error, res])
-    // }
+  source.get('/notes', (req, res, next) => {
+    getNotes()
+      .then(data => {
+        res.send(data)
+      })
+      .catch(next)
+  })
+
+  source.post('/note/add', (req, res) => {
+    try {
+      res.status(200)
+      addNotes(req.body)
+      res.json({ working: true })
+      res.end()
+    } catch (error) {
+      res.send('Note not added: ', error)
+    }
   })
 
   source.get('/users/:id', (err, res) => {

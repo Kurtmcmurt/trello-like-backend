@@ -8,6 +8,7 @@ const defaultKeyValues = {
   projects: [],
   users: [],
 }
+
 // Use JSON file for storage
 const file = join(baseUrl, 'db.json')
 const adapter = new JSONFile(file)
